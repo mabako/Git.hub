@@ -7,6 +7,10 @@
         /// </summary>
         public string Login { get; private set; }
 
+        public User()
+        {
+        }
+
         public override bool Equals(object obj)
         {
             return GetHashCode() == obj.GetHashCode();
