@@ -1,0 +1,6 @@
+# generated objects
+obj/
+bin/
+
+# user-files
+*.suo
