@@ -42,11 +42,11 @@ namespace Git.hub
         /// <returns>list of repositories</returns>
         public IList<Repository> getRepositories(string username)
         {
-            var request = new RestRequest("/users/{name}/repos", Method.GET);
+            var request = new RestRequest("/users/{name}/repos");
             request.RequestFormat = DataFormat.Json;
             request.AddUrlSegment("name", username);
 
-            var list = client.Execute<List<Repository>>(request).Data;
+            var list = client.Get<List<Repository>>(request).Data;
             list.ForEach(r => r._client = client);
             return list;
         }
@@ -59,11 +59,11 @@ namespace Git.hub
         /// <returns>fetched repository</returns>
         public Repository getRepository(string username, string repositoryName)
         {
-            var request = new RestRequest("/repos/{name}/{repo}", Method.GET);
+            var request = new RestRequest("/repos/{name}/{repo}");
             request.AddUrlSegment("name", username);
             request.AddUrlSegment("repo", repositoryName);
 
-            var repo = client.Execute<Repository>(request).Data;
+            var repo = client.Get<Repository>(request).Data;
             if (repo == null)
                 return null;
 

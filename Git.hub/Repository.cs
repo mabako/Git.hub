@@ -41,11 +41,11 @@ namespace Git.hub
         /// <returns>list of all branches</returns>
         public IList<Branch> GetBranches()
         {
-            RestRequest request = new RestRequest("/repos/{user}/{repo}/branches", Method.GET);
+            RestRequest request = new RestRequest("/repos/{user}/{repo}/branches");
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            return _client.Execute<List<Branch>>(request).Data;
+            return _client.Get<List<Branch>>(request).Data;
         }
 
         /// <summary>
@@ -54,11 +54,11 @@ namespace Git.hub
         /// <returns>llist of all open pull requests</returns>
         public IList<PullRequest> GetPullRequests()
         {
-            var request = new RestRequest("/repos/{user}/{repo}/pulls", Method.GET);
+            var request = new RestRequest("/repos/{user}/{repo}/pulls");
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            return _client.Execute<List<PullRequest>>(request).Data;
+            return _client.Get<List<PullRequest>>(request).Data;
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace Git.hub
         /// <returns>the single pull request</returns>
         public PullRequest GetPullRequest(int id)
         {
-            var request = new RestRequest("/repos/{user}/{repo}/pulls/{pull}", Method.GET);
+            var request = new RestRequest("/repos/{user}/{repo}/pulls/{pull}");
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
             request.AddUrlSegment("pull", id.ToString());
 
-            return _client.Execute<PullRequest>(request).Data;
+            return _client.Get<PullRequest>(request).Data;
         }
 
 #if _
