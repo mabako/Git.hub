@@ -9,7 +9,13 @@ namespace Git.hub
     /// </summary>
     public class Client
     {
-        private RestClient client = new RestClient("https://api.github.com");
+        private RestClient client;
+
+        public Client()
+        {
+            client = new RestClient("https://api.github.com");
+            client.UserAgent = "mabako/Git.hub";
+        }
 
         /// <summary>
         /// Sets the client to use username and password with GitHub

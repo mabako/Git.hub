@@ -28,6 +28,7 @@ namespace Git.hub
         {
             // Not on api.github.com
             var client = new RestClient("https://github.com");
+            client.UserAgent = "mabako/Git.hub";
 
             var request = new RestRequest("/login/oauth/access_token");
             request.RequestFormat = DataFormat.Json;
