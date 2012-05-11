@@ -37,7 +37,7 @@ namespace Git.hub
         public void setOAuth2Token(string token)
         {
             if (token != null)
-                client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(token);
+                client.Authenticator = new OAuth2AuthHelper(token);
             else
                 client.Authenticator = null;
         }
@@ -53,9 +53,12 @@ namespace Git.hub
 
             var request = new RestRequest("/user/repos?type=all");
 
-            var list = client.Get<List<Repository>>(request).Data;
-            list.ForEach(r => r._client = client);
-            return list;
+            var repos = client.Get<List<Repository>>(request);
+            if (repos.Data == null)
+                throw new Exception("Bad Credentials");
+
+            repos.Data.ForEach(r => r._client = client);
+            return repos.Data;
         }
 
         /// <summary>
@@ -123,7 +126,12 @@ namespace Git.hub
                 throw new ArgumentException("no authentication details");
 
             var request = new RestRequest("/user");
-            return client.Get<User>(request).Data;
+
+            var user = client.Get<User>(request);
+            if (user.Data == null)
+                throw new Exception("Bad Credentials");
+
+            return user.Data;
         }
     }
 }

@@ -42,4 +42,20 @@ namespace Git.hub
             return null;
         }
     }
+
+    /// <summary>
+    /// Github sure has some quirks.
+    /// 
+    /// (not even sure why) Using RestSharp's authenticators works on GET /user, but not GET /user/repos?
+    /// This basically works around that.
+    /// </summary>
+    class OAuth2AuthHelper : OAuth2Authenticator
+    {
+        public OAuth2AuthHelper(string token) : base(token) { }
+
+        public override void Authenticate(IRestClient client, IRestRequest request)
+        {
+            request.AddHeader("Authorization", "bearer " + AccessToken);
+        }
+    }
 }

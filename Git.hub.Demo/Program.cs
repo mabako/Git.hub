@@ -13,7 +13,9 @@ namespace Git.hub.Demo
             Client client = new Client();
             
             client.setCredentials("mabako", "");
+            //client.setOAuth2Token("");
             Console.WriteLine("Logged in as: {0}", client.getCurrentUser());
+            client.getRepositories().ToList().ForEach(repo => Console.WriteLine("  {0}", repo.Name));
 
             Console.WriteLine();
             Console.WriteLine("Repositories of mabako?");
