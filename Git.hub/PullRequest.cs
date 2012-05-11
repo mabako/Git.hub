@@ -4,7 +4,7 @@ namespace Git.hub
 {
     public class PullRequestInfo
     {
-        public User Owner { get; private set; }
+        public User User { get; private set; }
         public Repository Repo { get; private set; }
         public string Ref { get; private set; }
         public string Sha { get; private set; }
@@ -50,11 +50,15 @@ namespace Git.hub
         public PullRequestInfo Base { get; private set; }
         public PullRequestInfo Head { get; private set; }
 
+        public User User { get; private set; }
+
+        /*
         /// <summary>
         /// User who merged this pull request.
         /// 
         /// Only set in single pull requests, not lists of.
         /// </summary>
         public User MergedBy { get; private set; }
+        */
     }
 }
