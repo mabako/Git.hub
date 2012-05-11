@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RestSharp;
 
 namespace Git.hub
@@ -36,6 +37,22 @@ namespace Git.hub
         }
 
         /// <summary>
+        /// Lists all repositories for the logged in user
+        /// </summary>
+        /// <returns>list of repositories</returns>
+        public IList<Repository> getRepositories()
+        {
+            if (client.Authenticator == null)
+                throw new ArgumentException("no authentication details");
+
+            var request = new RestRequest("/user/repos?type=all");
+
+            var list = client.Get<List<Repository>>(request).Data;
+            list.ForEach(r => r._client = client);
+            return list;
+        }
+
+        /// <summary>
         /// Lists all repositories for a particular user
         /// </summary>
         /// <param name="username">username</param>
@@ -43,7 +60,6 @@ namespace Git.hub
         public IList<Repository> getRepositories(string username)
         {
             var request = new RestRequest("/users/{name}/repos");
-            request.RequestFormat = DataFormat.Json;
             request.AddUrlSegment("name", username);
 
             var list = client.Get<List<Repository>>(request).Data;
@@ -69,6 +85,21 @@ namespace Git.hub
 
             repo._client = client;
             return repo;
+        }
+
+        /// <summary>
+        /// Fetches all repositories of an organization
+        /// </summary>
+        /// <param name="organization">name of the organization</param>
+        /// <returns></returns>
+        public IList<Repository> getOrganizationRepositories(string organization)
+        {
+            var request = new RestRequest("/orgs/{org}/repos");
+            request.AddUrlSegment("org", organization);
+
+            var list = client.Get<List<Repository>>(request).Data;
+            list.ForEach(r => r._client = client);
+            return list;
         }
     }
 }
