@@ -110,5 +110,20 @@ namespace Git.hub
             list.ForEach(r => { r._client = client; r.Organization = org; });
             return list;
         }
+
+        /// <summary>
+        /// Retrieves the current user.
+        /// 
+        /// Requires to be logged in (OAuth/User+Password).
+        /// </summary>
+        /// <returns>current user</returns>
+        public User getCurrentUser()
+        {
+            if (client.Authenticator == null)
+                throw new ArgumentException("no authentication details");
+
+            var request = new RestRequest("/user");
+            return client.Get<User>(request).Data;
+        }
     }
 }
