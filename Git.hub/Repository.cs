@@ -16,20 +16,57 @@ namespace Git.hub
         public int Forks { get; private set; }
         public bool Private { get; private set; }
 
-        public Repository Parent { get; private set; }
-        internal RestClient _client { private get; set; }
-        
+        private Repository _Parent;
+        public Repository Parent
+        {
+            get
+            {
+                if (!Detailed)
+                    throw new NotSupportedException();
+                return _Parent;
+            }
+            private set
+            {
+                _Parent = value;
+            }
+        }
+
+        /// <summary>
+        /// Read-only clone url
+        /// git://github.com/{user}/{repo}.git
+        /// </summary>
+        public string GitUrl { get; private set; }
+
+        /// <summary>
+        /// Read/Write clone url via SSH
+        /// git@github.com/{user}/{repo.git}
+        /// </summary>
+        public string SshUrl { get; private set; }
+
+        /// <summary>
+        /// Read/Write clone url via HTTPS
+        /// https://github.com/{user}/{repo}.git
+        /// </summary>
+        public string CloneUrl { get; private set; }
+
+        internal RestClient _client;
+
+        /// <summary>
+        /// true if fetched from github.com/{user}/{repo}, false if from github.com/{user}
+        /// </summary>
+        public bool Detailed { get; internal set; }
+
         /// <summary>
         /// Forks this repository into your own account.
         /// </summary>
         /// <returns></returns>
         public Repository CreateFork()
         {
-            RestRequest request = new RestRequest("/repos/{user}/{repo}/forks", Method.POST);
+            RestRequest request = new RestRequest("/repos/{user}/{repo}/forks");
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            Repository forked = _client.Execute<Repository>(request).Data;
+            Repository forked = _client.Post<Repository>(request).Data;
             forked._client = _client;
             return forked;
         }

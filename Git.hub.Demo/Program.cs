@@ -12,13 +12,16 @@ namespace Git.hub.Demo
         {
             Client client = new Client();
             
-            // List all repositories of the user 'mabako'
-            client.getRepositories("mabako").ToList().ForEach(repo => Console.WriteLine(repo.Name));
+            Console.WriteLine("Repositories of mabako?");
+            client.getRepositories("mabako").ToList().ForEach(repo => Console.WriteLine("  {0}", repo.Name));
 
             Console.WriteLine();
-            Console.WriteLine("Branches of zwickau-mensa?");
+            Console.WriteLine("Branches of mabako/zwickau-mensa?");
             client.getRepository("mabako", "zwickau-mensa").GetBranches().ToList().ForEach(branch => Console.WriteLine("  {0} at {1}", branch.Name, branch.Commit.Sha));
-            
+
+            Console.WriteLine();
+            Console.WriteLine("Parent of mabako/Android-Terminal-Emulator?");
+            Console.WriteLine("  {0}", client.getRepository("mabako", "Android-Terminal-Emulator").Parent);
             Console.ReadLine();
         }
     }

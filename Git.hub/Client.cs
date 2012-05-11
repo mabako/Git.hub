@@ -84,6 +84,7 @@ namespace Git.hub
                 return null;
 
             repo._client = client;
+            repo.Detailed = true;
             return repo;
         }
 
