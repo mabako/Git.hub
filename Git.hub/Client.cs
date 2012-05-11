@@ -99,7 +99,9 @@ namespace Git.hub
             request.AddUrlSegment("org", organization);
 
             var list = client.Get<List<Repository>>(request).Data;
-            list.ForEach(r => r._client = client);
+
+            Organization org = new Organization { Login = organization };
+            list.ForEach(r => { r._client = client; r.Organization = org; });
             return list;
         }
     }

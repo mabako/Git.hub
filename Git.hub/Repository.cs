@@ -15,6 +15,7 @@ namespace Git.hub
         public bool Fork { get; private set; }
         public int Forks { get; private set; }
         public bool Private { get; private set; }
+        public Organization Organization { get; internal set; }
 
         private Repository _Parent;
         public Repository Parent
