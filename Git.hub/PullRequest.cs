@@ -41,6 +41,11 @@ namespace Git.hub
         public DateTime UpdatedAt { get; private set; }
 
         /// <summary>
+        /// URL for the unified diff file
+        /// </summary>
+        public string DiffUrl { get; private set; }
+
+        /// <summary>
         /// Internally used URL for this pull request.
         /// 
         /// https://api.github.com/{user}/{repo}/pulls/{id}
