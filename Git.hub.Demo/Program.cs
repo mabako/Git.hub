@@ -12,11 +12,11 @@ namespace Git.hub.Demo
         {
             Client client = new Client();
             
-            client.setCredentials("mabako", "");
+            //client.setCredentials("mabako", "");
             //client.setOAuth2Token("");
-            Console.WriteLine("Logged in as: {0}", client.getCurrentUser());
-            client.getRepositories().ToList().ForEach(repo => Console.WriteLine("  {0}", repo.Name));
-
+            //Console.WriteLine("Logged in as: {0}", client.getCurrentUser());
+            //client.getRepositories().ToList().ForEach(repo => Console.WriteLine("  {0}", repo.Name));
+            
             Console.WriteLine();
             Console.WriteLine("Repositories of mabako?");
             client.getRepositories("mabako").ToList().ForEach(repo => Console.WriteLine("  {0}", repo.Name));
@@ -28,6 +28,27 @@ namespace Git.hub.Demo
             Console.WriteLine();
             Console.WriteLine("Parent of mabako/Android-Terminal-Emulator?");
             Console.WriteLine("  {0}", client.getRepository("mabako", "Android-Terminal-Emulator").Parent);
+
+            Console.WriteLine();
+            var gitext = client.getRepository("spdr870", "gitextensions");
+            Console.WriteLine("Pull Requests of " + gitext.ToString());
+            gitext.GetPullRequests().ToList().ForEach(pr => Console.WriteLine("  #{0}: {1} by {2}", pr.Number, pr.Title, pr.User.Login));
+
+            Console.WriteLine();
+            var pullrequest = gitext.GetPullRequest(599);
+            Console.WriteLine(pullrequest.Title + " by " + pullrequest.User.Login);
+            var commits = pullrequest.GetCommits();
+            var comments = pullrequest.GetIssueComments();
+            commits.ToList().ForEach(commit => Console.WriteLine("  has Commit by {0}", commit.AuthorName));
+            comments.ToList().ForEach(comment => Console.WriteLine("  has Comment by {0}", comment.User.Login));
+
+            /*
+            Console.WriteLine();
+            var apitest = client.getRepository("mabako", "apitest");
+            var apitest_pr = apitest.GetPullRequest(3);
+            apitest_pr.ToIssue().CreateComment("This is a sample comment from the API");
+            //Console.WriteLine(apitest_pr.CreatePullRequest("mabako:tex", "master", "title", "body"));
+            */
             Console.ReadLine();
         }
     }
