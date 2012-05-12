@@ -16,12 +16,29 @@ namespace Git.hub
 
         public List<IssueComment> GetComments()
         {
-            var request = new RestRequest("/repos/{user}/{repo}/issues/{pull}/comments");
+            var request = new RestRequest("/repos/{user}/{repo}/issues/{issue}/comments");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
-            request.AddUrlSegment("pull", Number.ToString());
+            request.AddUrlSegment("issue", Number.ToString());
 
             return _client.Get<List<IssueComment>>(request).Data;
+        }
+
+        public IssueComment CreateComment(string body)
+        {
+            if (_client.Authenticator == null)
+                throw new ArgumentException("no authentication details");
+
+            var request = new RestRequest("/repos/{user}/{repo}/issues/{issue}/comments");
+            request.AddUrlSegment("user", Repository.Owner.Login);
+            request.AddUrlSegment("repo", Repository.Name);
+            request.AddUrlSegment("issue", Number.ToString());
+
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new {
+                body = body
+            });
+            return _client.Post<IssueComment>(request).Data;
         }
     }
 
