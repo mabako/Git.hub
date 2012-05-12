@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RestSharp;
+using Git.hub.util;
 
 namespace Git.hub
 {
@@ -124,36 +125,37 @@ namespace Git.hub
             pullrequest.Repository = this;
             return pullrequest;
         }
-
-#if _
         /// <summary>
         /// Creates a new pull request
         /// </summary>
         /// <param name="headBranch">branch in the own repository, like mabako:new-awesome-thing</param>
         /// <param name="baseBranch">branch it should be merged into in the original repository, like master</param>
         /// <param name="title">title of the request</param>
-        /// <param name="body">body</param>
+        /// <param name="body">body/message</param>
         /// <returns></returns>
         public PullRequest CreatePullRequest(string headBranch, string baseBranch, string title, string body)
         {
-            /*
-            var request = new RestRequest("/repos/{name}/{repo}/pulls", Method.POST);
+            var request = new RestRequest("/repos/{name}/{repo}/pulls");
             request.AddUrlSegment("name", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
             request.RequestFormat = DataFormat.Json;
-            request.AddParameter("title", title);
-            request.AddParameter("body", body);
-            request.AddParameter("head", headBranch);
-            request.AddParameter("base", baseBranch);
+            request.JsonSerializer = new ReplacingJsonSerializer("\"x__custom__base\":\"", "\"base\":\"");
+            request.AddBody(new {
+                title = title,
+                body = body,
+                head = headBranch,
+                x__custom__base = baseBranch
+            });
 
-            var pullrequest = _client.Execute<PullRequest>(request);
-            Console.WriteLine(pullrequest.Content);
-            return pullrequest.Data;
-            */
-            return null;
+            var pullrequest = _client.Post<PullRequest>(request).Data;
+            if(pullrequest == null)
+                return null;
+
+            pullrequest._client = _client;
+            pullrequest.Repository = this;
+            return pullrequest;
         }
-#endif
 
         public override bool Equals(object obj)
         {
