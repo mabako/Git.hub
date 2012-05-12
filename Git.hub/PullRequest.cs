@@ -75,6 +75,10 @@ namespace Git.hub
 
         internal RestClient _client;
 
+        /// <summary>
+        /// Retrieves all Commits associated with this pull request.
+        /// </summary>
+        /// <returns></returns>
         public List<PullRequestCommit> GetCommits()
         {
             var request = new RestRequest("/repos/{user}/{repo}/pulls/{pull}/commits");
@@ -83,6 +87,16 @@ namespace Git.hub
             request.AddUrlSegment("pull", Number.ToString());
 
             return _client.Get<List<PullRequestCommit>>(request).Data;
+        }
+
+        public List<IssueComment> GetIssueComments()
+        {
+            var request = new RestRequest("/repos/{user}/{repo}/issues/{pull}/comments");
+            request.AddUrlSegment("user", Repository.Owner.Login);
+            request.AddUrlSegment("repo", Repository.Name);
+            request.AddUrlSegment("pull", Number.ToString());
+
+            return _client.Get<List<IssueComment>>(request).Data;
         }
     }
 }

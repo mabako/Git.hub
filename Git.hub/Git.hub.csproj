@@ -41,6 +41,7 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Commit.cs" />
+    <Compile Include="Issue.cs" />
     <Compile Include="OAuth2Helper.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
