@@ -11,9 +11,18 @@ namespace Git.hub
     {
         private RestClient client;
 
-        public Client()
+        /// <summary>
+        /// Creates a new client instance for github.com
+        /// </summary>
+        public Client() : this("https://api.github.com") { }
+
+        /// <summary>
+        /// Creates a new client instance
+        /// </summary>
+        /// <param name="apiEndpoint">the host to connect to, e.g. 'https://api.github.com'</param>
+        public Client(string apiEndpoint)
         {
-            client = new RestClient("https://api.github.com");
+            client = new RestClient(apiEndpoint);
             client.UserAgent = "mabako/Git.hub";
         }
 
