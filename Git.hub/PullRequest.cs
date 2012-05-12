@@ -81,7 +81,7 @@ namespace Git.hub
         /// <returns></returns>
         public List<PullRequestCommit> GetCommits()
         {
-            var request = new RestRequest("/repos/{user}/{repo}/pulls/{pull}/commits");
+            var request = new RestRequest("repos/{user}/{repo}/pulls/{pull}/commits");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("pull", Number.ToString());
@@ -89,14 +89,39 @@ namespace Git.hub
             return _client.Get<List<PullRequestCommit>>(request).Data;
         }
 
+        public Issue ToIssue()
+        {
+            return new Issue { _client = _client, Repository = Repository, Number = Number };
+        }
+
         public List<IssueComment> GetIssueComments()
         {
-            var request = new RestRequest("/repos/{user}/{repo}/issues/{pull}/comments");
+            return ToIssue().GetComments();
+        }
+
+        public bool Open()
+        {
+            return UpdateState("open");
+        }
+
+        public bool Close()
+        {
+            return UpdateState("closed");
+        }
+
+        private bool UpdateState(string state)
+        {
+            var request = new RestRequest("repos/{user}/{repo}/pulls/{pull}");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("pull", Number.ToString());
 
-            return _client.Get<List<IssueComment>>(request).Data;
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new
+            {
+                state = state
+            });
+            return _client.Patch(request).StatusCode == System.Net.HttpStatusCode.OK;
         }
     }
 }
