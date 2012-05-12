@@ -96,7 +96,12 @@ namespace Git.hub
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            return _client.Get<List<PullRequest>>(request).Data;
+            var list = _client.Get<List<PullRequest>>(request).Data;
+            if (list == null)
+                return null;
+
+            list.ForEach(pr => { pr._client = _client; pr.Repository = this; });
+            return list;
         }
 
         /// <summary>
@@ -111,7 +116,13 @@ namespace Git.hub
             request.AddUrlSegment("repo", Name);
             request.AddUrlSegment("pull", id.ToString());
 
-            return _client.Get<PullRequest>(request).Data;
+            var pullrequest = _client.Get<PullRequest>(request).Data;
+            if (pullrequest == null)
+                return null;
+
+            pullrequest._client = _client;
+            pullrequest.Repository = this;
+            return pullrequest;
         }
 
 #if _

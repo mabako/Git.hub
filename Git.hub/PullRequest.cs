@@ -1,4 +1,6 @@
 ﻿using System;
+using RestSharp;
+using System.Collections.Generic;
 
 namespace Git.hub
 {
@@ -15,6 +17,11 @@ namespace Git.hub
     /// </summary>
     public class PullRequest
     {
+        /// <summary>
+        /// Repository to which this pull request belongs.
+        /// </summary>
+        public Repository Repository { get; internal set; }
+
         /// <summary>
         /// ID of the pull request
         /// </summary>
@@ -65,5 +72,17 @@ namespace Git.hub
         /// </summary>
         public User MergedBy { get; private set; }
         */
+
+        internal RestClient _client;
+
+        public List<PullRequestCommit> GetCommits()
+        {
+            var request = new RestRequest("/repos/{user}/{repo}/pulls/{pull}/commits");
+            request.AddUrlSegment("user", Repository.Owner.Login);
+            request.AddUrlSegment("repo", Repository.Name);
+            request.AddUrlSegment("pull", Number.ToString());
+
+            return _client.Get<List<PullRequestCommit>>(request).Data;
+        }
     }
 }
