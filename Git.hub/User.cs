@@ -5,7 +5,7 @@
         /// <summary>
         /// The GitHub username
         /// </summary>
-        public string Login { get; private set; }
+        public string Login { get; internal set; }
 
         public User()
         {

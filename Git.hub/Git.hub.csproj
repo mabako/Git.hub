@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIv2\RepositoryV2.cs" />
     <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Commit.cs" />

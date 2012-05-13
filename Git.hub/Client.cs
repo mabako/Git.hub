@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RestSharp;
 
 namespace Git.hub
@@ -143,6 +144,27 @@ namespace Git.hub
                 throw new Exception("Bad Credentials");
 
             return user.Data;
+        }
+
+        /// <summary>
+        /// Searches through all of Github's repositories, similar to the search on the website itself.
+        /// </summary>
+        /// <param name="query">what to search for</param>
+        /// <returns>(limited) list of matching repositories</returns>
+        public List<Repository> searchRepositories(string query)
+        {
+            var request = new RestRequest("/legacy/repos/search/{query}");
+            request.AddUrlSegment("query", query);
+
+            var repos = client.Get<APIv2.RepositoryListV2>(request);
+            if (repos.Data == null || repos.Data.Repositories == null)
+            {
+                Console.WriteLine(repos.Content);
+                throw new Exception(string.Format("Could not search for {0}", query));
+            }
+
+            List<Repository> convertedRepos = repos.Data.Repositories.Select(r => r.ToV3(client)).ToList();
+            return convertedRepos;
         }
     }
 }

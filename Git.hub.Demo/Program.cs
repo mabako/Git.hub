@@ -49,6 +49,16 @@ namespace Git.hub.Demo
             apitest_pr.ToIssue().CreateComment("This is a sample comment from the API");
             //Console.WriteLine(apitest_pr.CreatePullRequest("mabako:tex", "master", "title", "body"));
             */
+
+            Console.WriteLine();
+            Console.WriteLine("Query for Git Extensions?");
+            var search = client.searchRepositories("Git Extensions");
+            search.ForEach(repo =>
+            {
+                Console.WriteLine("  {0} by {1}", repo.Name, repo.Owner.Login);
+                Console.WriteLine("   -> {0}", repo.GitUrl);
+            });
+
             Console.ReadLine();
         }
     }

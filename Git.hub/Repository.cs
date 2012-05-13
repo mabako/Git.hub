@@ -9,13 +9,13 @@ namespace Git.hub
 {
     public class Repository
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public string Homepage { get; private set; }
-        public User Owner { get; private set; }
-        public bool Fork { get; private set; }
-        public int Forks { get; private set; }
-        public bool Private { get; private set; }
+        public string Name { get; internal set; }
+        public string Description { get; internal set; }
+        public string Homepage { get; internal set; }
+        public User Owner { get; internal set; }
+        public bool Fork { get; internal set; }
+        public int Forks { get; internal set; }
+        public bool Private { get; internal set; }
         public Organization Organization { get; internal set; }
 
         private Repository _Parent;
@@ -37,19 +37,19 @@ namespace Git.hub
         /// Read-only clone url
         /// git://github.com/{user}/{repo}.git
         /// </summary>
-        public string GitUrl { get; private set; }
+        public string GitUrl { get; internal set; }
 
         /// <summary>
         /// Read/Write clone url via SSH
         /// git@github.com/{user}/{repo.git}
         /// </summary>
-        public string SshUrl { get; private set; }
+        public string SshUrl { get; internal set; }
 
         /// <summary>
         /// Read/Write clone url via HTTPS
         /// https://github.com/{user}/{repo}.git
         /// </summary>
-        public string CloneUrl { get; private set; }
+        public string CloneUrl { get; internal set; }
 
         internal RestClient _client;
 
