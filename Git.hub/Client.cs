@@ -156,15 +156,11 @@ namespace Git.hub
             var request = new RestRequest("/legacy/repos/search/{query}");
             request.AddUrlSegment("query", query);
 
-            var repos = client.Get<APIv2.RepositoryListV2>(request);
-            if (repos.Data == null || repos.Data.Repositories == null)
-            {
-                Console.WriteLine(repos.Content);
+            var repos = client.Get<APIv2.RepositoryListV2>(request).Data;
+            if (repos == null || repos.Repositories == null)
                 throw new Exception(string.Format("Could not search for {0}", query));
-            }
 
-            List<Repository> convertedRepos = repos.Data.Repositories.Select(r => r.ToV3(client)).ToList();
-            return convertedRepos;
+            return repos.Repositories.Select(r => r.ToV3(client)).ToList();
         }
     }
 }
