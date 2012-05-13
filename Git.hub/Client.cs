@@ -81,6 +81,8 @@ namespace Git.hub
             request.AddUrlSegment("name", username);
 
             var list = client.Get<List<Repository>>(request).Data;
+            if (list == null)
+                throw new InvalidOperationException("User does not exist.");
             list.ForEach(r => r._client = client);
             return list;
         }

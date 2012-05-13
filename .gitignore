@@ -4,3 +4,4 @@ bin/
 
 # user-files
 *.suo
+_ReSharper*/
