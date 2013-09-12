@@ -86,7 +86,7 @@ namespace Git.hub
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("pull", Number.ToString());
 
-            return _client.Get<List<PullRequestCommit>>(request).Data;
+            return _client.GetList<PullRequestCommit>(request);
         }
 
         public Issue ToIssue()

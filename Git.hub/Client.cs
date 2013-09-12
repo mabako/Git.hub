@@ -63,12 +63,12 @@ namespace Git.hub
 
             var request = new RestRequest("/user/repos?type=all");
 
-            var repos = client.Get<List<Repository>>(request);
-            if (repos.Data == null)
+            var repos = client.GetList<Repository>(request);
+            if (repos == null)
                 throw new Exception("Bad Credentials");
 
-            repos.Data.ForEach(r => r._client = client);
-            return repos.Data;
+            repos.ForEach(r => r._client = client);
+            return repos;
         }
 
         /// <summary>
@@ -81,9 +81,10 @@ namespace Git.hub
             var request = new RestRequest("/users/{name}/repos");
             request.AddUrlSegment("name", username);
 
-            var list = client.Get<List<Repository>>(request).Data;
+            var list = client.GetList<Repository>(request);
             if (list == null)
                 throw new InvalidOperationException("User does not exist.");
+
             list.ForEach(r => r._client = client);
             return list;
         }
@@ -119,7 +120,7 @@ namespace Git.hub
             var request = new RestRequest("/orgs/{org}/repos");
             request.AddUrlSegment("org", organization);
 
-            var list = client.Get<List<Repository>>(request).Data;
+            var list = client.GetList<Repository>(request);
 
             Organization org = new Organization { Login = organization };
             list.ForEach(r => { r._client = client; r.Organization = org; });

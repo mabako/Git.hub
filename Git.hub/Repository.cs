@@ -84,7 +84,7 @@ namespace Git.hub
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            return _client.Get<List<Branch>>(request).Data;
+            return _client.GetList<Branch>(request);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Git.hub
             request.AddUrlSegment("user", Owner.Login);
             request.AddUrlSegment("repo", Name);
 
-            var list = _client.Get<List<PullRequest>>(request).Data;
+            var list = _client.GetList<PullRequest>(request);
             if (list == null)
                 return null;
 
