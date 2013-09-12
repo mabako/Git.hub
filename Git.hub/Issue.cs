@@ -21,7 +21,7 @@ namespace Git.hub
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("issue", Number.ToString());
 
-            return _client.Get<List<IssueComment>>(request).Data;
+            return _client.GetList<IssueComment>(request);
         }
 
         public IssueComment CreateComment(string body)
