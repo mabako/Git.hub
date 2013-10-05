@@ -157,6 +157,34 @@ namespace Git.hub
             return pullrequest;
         }
 
+        /// <summary>
+        /// Creates a new issue
+        /// </summary>
+        /// <param name="title">title</param>
+        /// <param name="body">body</param>
+        /// <returns>the issue if successful, null otherwise</returns>
+        public Issue CreateIssue(string title, string body)
+        {
+            var request = new RestRequest("/repos/{owner}/{repo}/issues");
+            request.AddUrlSegment("owner", Owner.Login);
+            request.AddUrlSegment("repo", Name);
+
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new
+            {
+                title = title,
+                body = body
+            });
+
+            var issue = _client.Post<Issue>(request).Data;
+            if (issue == null)
+                return null;
+
+            issue._client = _client;
+            issue.Repository = this;
+            return issue;
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Repository && GetHashCode() == obj.GetHashCode();
