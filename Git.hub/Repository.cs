@@ -157,6 +157,23 @@ namespace Git.hub
             return pullrequest;
         }
 
+        public GitHubReference GetRef(string refName)
+        {
+            var request = new RestRequest("/repos/{owner}/{repo}/git/refs/{ref}");
+            request.AddUrlSegment("owner", Owner.Login);
+            request.AddUrlSegment("repo", Name);
+            request.AddUrlSegment("ref", refName);
+
+            var ghRef = _client.Get<GitHubReference>(request).Data;
+            if (ghRef == null)
+                return null;
+
+            ghRef._client = _client;
+            ghRef.Repository = this;
+            return ghRef;   
+        }
+
+
         public Issue CreateIssue(string title, string body)
         {
             var request = new RestRequest("/repos/{owner}/{repo}/issues");

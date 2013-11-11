@@ -45,6 +45,7 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Commit.cs" />
+    <Compile Include="GitHubTree.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="OAuth2Helper.cs" />
     <Compile Include="Organization.cs" />
