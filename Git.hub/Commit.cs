@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RestSharp;
 
 namespace Git.hub
 {
@@ -52,6 +53,9 @@ namespace Git.hub
     // Not too sure this is the same for normal commits.
     public class Commit
     {
+        internal RestClient _client;
+        public Repository Repository { get; internal set; }
+
         public string Url { get; private set; }
         public CommitAuthor Author { get; private set; }
         public CommitAuthor Committer { get; private set; }
