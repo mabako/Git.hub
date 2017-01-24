@@ -174,6 +174,12 @@ namespace Git.hub
         }
 
 
+        /// <summary>
+        /// Creates a new issue
+        /// </summary>
+        /// <param name="title">title</param>
+        /// <param name="body">body</param>
+        /// <returns>the issue if successful, null otherwise</returns>
         public Issue CreateIssue(string title, string body)
         {
             var request = new RestRequest("/repos/{owner}/{repo}/issues");
