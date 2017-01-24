@@ -53,6 +53,10 @@ namespace Git.hub
                 client.Authenticator = null;
         }
 
+        /// <summary>
+        /// Sets the client to use a proxy
+        /// </summary>
+        /// <param name="address">proxy address</param>
         public void setProxyAddress(string address)
         {
             if (address != null)
