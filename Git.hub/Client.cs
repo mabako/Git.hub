@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using RestSharp;
 
 namespace Git.hub
@@ -50,6 +51,18 @@ namespace Git.hub
                 client.Authenticator = new OAuth2AuthHelper(token);
             else
                 client.Authenticator = null;
+        }
+
+        /// <summary>
+        /// Sets the client to use a proxy
+        /// </summary>
+        /// <param name="address">proxy address</param>
+        public void setProxyAddress(string address)
+        {
+            if (address != null)
+                client.Proxy = new WebProxy(address);
+            else
+                client.Proxy = null;
         }
 
         /// <summary>
